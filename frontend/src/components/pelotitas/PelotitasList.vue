@@ -101,8 +101,8 @@ const stockActual = computed(() => {
 })
 
 onMounted(async () => {
-  await pelotitasStore.fetchPelotitas()
-  await pelotitasStore.fetchResumen()
+  await pelotitasStore.cargarPelotitas()
+  await pelotitasStore.cargarResumen()
 })
 
 const formatDate = (dateString: string) => {
@@ -118,8 +118,8 @@ const formatMoney = (value: number | null | undefined) => {
 const handleDelete = async (id: number) => {
   if (confirm('¿Está seguro de eliminar este movimiento?')) {
     try {
-      await pelotitasStore.deletePelotita(id)
-      await pelotitasStore.fetchResumen()
+      await pelotitasStore.eliminarPelotita(id)
+      await pelotitasStore.cargarResumen()
     } catch (error) {
       console.error('Error al eliminar:', error)
     }
@@ -128,7 +128,7 @@ const handleDelete = async (id: number) => {
 
 const goToPage = async (page: number) => {
   if (page >= 1 && page <= pelotitasStore.totalPages) {
-    await pelotitasStore.fetchPelotitas(page)
+    await pelotitasStore.cargarPelotitas(page)
   }
 }
 

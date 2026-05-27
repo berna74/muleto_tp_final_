@@ -198,9 +198,9 @@ const formData = ref<Pelotita>({
 onMounted(async () => {
   try {
     await Promise.all([
-      sociosStore.fetchSocios(),
-      alumnosStore.fetchAlumnos(),
-      pelotitasStore.fetchPelotita(props.pelotitaId)
+      sociosStore.cargarSocios(),
+      alumnosStore.cargarAlumnos(),
+      pelotitasStore.cargarPelotita(props.pelotitaId)
     ])
     
     if (pelotitasStore.pelotita) {
@@ -240,7 +240,7 @@ watch(() => formData.value.tipo, (newTipo) => {
 const handleSubmit = async () => {
   saving.value = true
   try {
-    await pelotitasStore.updatePelotita(props.pelotitaId, formData.value)
+    await pelotitasStore.actualizarPelotita(props.pelotitaId, formData.value)
     emit('updated')
     emit('close')
   } catch (error) {

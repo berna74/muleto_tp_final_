@@ -100,8 +100,8 @@ const submitLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(async () => {
-  await profesoresStore.fetchProfesores()
-  await alumnosStore.fetchAlumno(props.alumnoId)
+  await profesoresStore.cargarProfesores()
+  await alumnosStore.cargarAlumno(props.alumnoId)
   
   const alumno = alumnosStore.alumno
   if (alumno) {
@@ -130,7 +130,7 @@ async function handleSubmit() {
   }
   
   try {
-    await alumnosStore.updateAlumno(props.alumnoId, formData.value)
+    await alumnosStore.actualizarAlumno(props.alumnoId, formData.value)
     emit('updated')
   } catch (e: any) {
     error.value = e.response?.data?.mensaje || 'Error al actualizar alumno'

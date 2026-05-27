@@ -2,72 +2,58 @@ from django.db import models
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Pelotita
-from core_api.common import parse_json, response_item, response_list, response_paginated, serialize_pelotita
+from .serializers import PelotitaSerializer
+from core_api.common import parsear_json, respuesta_item, respuesta_lista, respuesta_paginada
 
 
 @csrf_exempt
-def pelotitas_collection(request):
+def coleccion_pelotitas(request):
 	if request.method == "GET":
 		page = int(request.GET.get("page", 1))
 		pelotitas = Pelotita.objects.all().order_by("-fecha", "-id")
-		return response_paginated([serialize_pelotita(pelotita) for pelotita in pelotitas], page=page)
+		return respuesta_paginada(PelotitaSerializer(pelotitas, many=True).data, page=page)
 
-	data = parse_json(request)
+	data = parsear_json(request)
 	if data is None:
-		return response_item({"mensaje": "JSON inválido"}, status=400)
+		return respuesta_item({"mensaje": "JSON inválido"}, status=400)
 
-	pelotita = Pelotita.objects.create(
-		fecha=data.get("fecha"),
-		tipo=data.get("tipo", ""),
-		cantidad=data.get("cantidad", 0),
-		precio_unitario=data.get("precio_unitario", 0),
-		total=data.get("total", 0),
-		proveedor=data.get("proveedor"),
-		comprador_tipo=data.get("comprador_tipo"),
-		comprador_id=data.get("comprador_id"),
-		comprador_nombre=data.get("comprador_nombre"),
-		observaciones=data.get("observaciones"),
-	)
+	serializer = PelotitaSerializer(data=data)
+	if not serializer.is_valid():
+		return respuesta_item(serializer.errors, status=400)
+	pelotita = serializer.save()
 	pelotita.refresh_from_db()
-	return response_item(serialize_pelotita(pelotita), status=201)
+	return respuesta_item(PelotitaSerializer(pelotita).data, status=201)
 
 
 @csrf_exempt
-def pelotita_detail(request, pk):
+def detalle_pelotita(request, pk):
 	try:
 		pelotita = Pelotita.objects.get(pk=pk)
 	except Pelotita.DoesNotExist:
-		return response_item({"mensaje": "Pelotita no encontrada"}, status=404)
+		return respuesta_item({"mensaje": "Pelotita no encontrada"}, status=404)
 
 	if request.method == "GET":
-		return response_item(serialize_pelotita(pelotita))
+		return respuesta_item(PelotitaSerializer(pelotita).data)
 
 	if request.method == "PUT":
-		data = parse_json(request)
+		data = parsear_json(request)
 		if data is None:
-			return response_item({"mensaje": "JSON inválido"}, status=400)
-		pelotita.fecha = data.get("fecha", pelotita.fecha)
-		pelotita.tipo = data.get("tipo", pelotita.tipo)
-		pelotita.cantidad = data.get("cantidad", pelotita.cantidad)
-		pelotita.precio_unitario = data.get("precio_unitario", pelotita.precio_unitario)
-		pelotita.total = data.get("total", pelotita.total)
-		pelotita.proveedor = data.get("proveedor", pelotita.proveedor)
-		pelotita.comprador_tipo = data.get("comprador_tipo", pelotita.comprador_tipo)
-		pelotita.comprador_id = data.get("comprador_id", pelotita.comprador_id)
-		pelotita.comprador_nombre = data.get("comprador_nombre", pelotita.comprador_nombre)
-		pelotita.observaciones = data.get("observaciones", pelotita.observaciones)
-		pelotita.save()
+			return respuesta_item({"mensaje": "JSON inválido"}, status=400)
+		serializer = PelotitaSerializer(pelotita, data=data, partial=True)
+		if not serializer.is_valid():
+			return respuesta_item(serializer.errors, status=400)
+		pelotita = serializer.save()
 		pelotita.refresh_from_db()
-		return response_item(serialize_pelotita(pelotita))
+		return respuesta_item(PelotitaSerializer(pelotita).data)
 
 	if request.method == "DELETE":
 		pelotita.delete()
-		return response_item({"mensaje": "Pelotita eliminada"})
+		return respuesta_item({"mensaje": "Pelotita eliminada"})
 
-	return response_item({"mensaje": "Método no permitido"}, status=405)
+	return respuesta_item({"mensaje": "Método no permitido"}, status=405)
 
 
-def pelotitas_resumen(request):
+def resumen_pelotitas(request):
 	resumen = list(
 		Pelotita.objects.values("tipo")
 		.annotate(
@@ -77,4 +63,4 @@ def pelotitas_resumen(request):
 		)
 		.order_by("tipo")
 	)
-	return response_list(resumen)
+	return respuesta_lista(resumen)

@@ -1,5 +1,5 @@
 from django.http import JsonResponse
 
 
-def api_root(request):
-	return JsonResponse({"message": "API Django activa"})
+def raiz_api(request):
+	return JsonResponse({"message": "API Django andando"})

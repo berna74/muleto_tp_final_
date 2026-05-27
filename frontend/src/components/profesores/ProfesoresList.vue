@@ -2,13 +2,13 @@
   <div class="profesores-list">
     <div class="header">
       <h2>Lista de Profesores</h2>
-      <button @click="showCreateForm = true" class="btn-primary">
+      <button @click="mostrarFormularioAlta = true" class="btn-primary">
         <Icon icon="mdi:plus" width="20" height="20" />
         Nuevo Profesor
       </button>
     </div>
 
-    <ProfesoresCreate v-if="showCreateForm" @close="showCreateForm = false" @created="handleCreated" />
+    <ProfesoresCreate v-if="mostrarFormularioAlta" @close="mostrarFormularioAlta = false" @created="manejarCreado" />
     <ProfesoresShow v-if="showingProfesorId" :id="showingProfesorId" @close="showingProfesorId = null" />
 
     <div v-if="loading" class="loading">Cargando profesores...</div>
@@ -63,7 +63,7 @@
         </button>
       </div>
     </div>
-    <ProfesoresUpdate v-if="editingProfesorId" :id="editingProfesorId" @close="editingProfesorId = null" @updated="handleUpdated" />
+    <ProfesoresUpdate v-if="editingProfesorId" :id="editingProfesorId" @close="editingProfesorId = null" @updated="manejarActualizado" />
   </div>
 </template>
 
@@ -95,12 +95,12 @@ const profesoresOrdenados = computed(() => {
   })
 })
 
-const showCreateForm = ref(false)
+const mostrarFormularioAlta = ref(false)
 const showingProfesorId = ref<number | null>(null)
 const editingProfesorId = ref<number | null>(null)
 
 onMounted(() => {
-  profesoresStore.fetchProfesores()
+  profesoresStore.cargarProfesores()
 })
 
 function viewProfesor(id: number) {
@@ -113,24 +113,24 @@ function editProfesor(id: number) {
 
 function confirmDelete(id: number) {
   if (confirm('¿Está seguro de que desea eliminar este profesor?')) {
-    profesoresStore.deleteProfesor(id)
+    profesoresStore.eliminarProfesor(id)
   }
 }
 
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
-    profesoresStore.fetchProfesores(page)
+    profesoresStore.cargarProfesores(page)
   }
 }
 
-function handleCreated() {
-  showCreateForm.value = false
-  profesoresStore.fetchProfesores(1)
+function manejarCreado() {
+  mostrarFormularioAlta.value = false
+  profesoresStore.cargarProfesores(1)
 }
 
-function handleUpdated() {
+function manejarActualizado() {
   editingProfesorId.value = null
-  profesoresStore.fetchProfesores(currentPage.value)
+  profesoresStore.cargarProfesores(currentPage.value)
 }
 </script>
 

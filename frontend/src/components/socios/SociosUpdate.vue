@@ -57,7 +57,7 @@
           </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group categorias-ancho-completo">
           <label>Categorías:</label>
           <div class="checkbox-group">
             <label v-for="cat in categorias" :key="cat.id" class="checkbox-label">
@@ -151,8 +151,8 @@ const submitLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(async () => {
-  await profesoresStore.fetchProfesores()
-  await categoriasStore.fetchCategorias()
+  await profesoresStore.cargarProfesores()
+  await categoriasStore.cargarCategorias()
 })
 
 async function handleSubmit() {
@@ -160,7 +160,7 @@ async function handleSubmit() {
   error.value = null
   
   try {
-    await sociosStore.updateSocio(props.socio.id, {
+    await sociosStore.actualizarSocio(props.socio.id, {
       ...formData.value,
       categorias: selectedCategorias.value
     })
@@ -234,6 +234,8 @@ small {
 }
 
 .checkbox-group {
+  width: 100%;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 0.75rem;
@@ -241,6 +243,10 @@ small {
   border: 1px solid #d8e0ef;
   border-radius: 12px;
   background: linear-gradient(180deg, #f9fbff 0%, #ffffff 100%);
+}
+
+.categorias-ancho-completo {
+  width: 100%;
 }
 
 .checkbox-label {

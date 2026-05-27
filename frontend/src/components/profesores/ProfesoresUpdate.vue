@@ -64,7 +64,7 @@ const form = ref({
 })
 
 onMounted(() => {
-  profesoresStore.fetchProfesor(props.id)
+  profesoresStore.cargarProfesor(props.id)
 })
 
 watch(profesor, (newProfesor) => {
@@ -82,7 +82,7 @@ watch(profesor, (newProfesor) => {
 
 async function handleSubmit() {
   try {
-    await profesoresStore.updateProfesor(props.id, form.value)
+    await profesoresStore.actualizarProfesor(props.id, form.value)
     emit('updated')
   } catch (error) {
     console.error('Error al actualizar profesor:', error)

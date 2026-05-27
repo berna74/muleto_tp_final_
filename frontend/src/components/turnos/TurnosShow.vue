@@ -35,7 +35,7 @@ const turnosStore = useTurnosStore()
 const { turno, loading } = storeToRefs(turnosStore)
 
 onMounted(() => {
-  turnosStore.fetchTurno(props.id)
+  turnosStore.cargarTurno(props.id)
 })
 </script>
 

@@ -1,9 +1,9 @@
 from django.urls import re_path
 
-from .views import profesor_detail, profesores_collection
+from .views import detalle_profesor, coleccion_profesores
 
 
 urlpatterns = [
-    re_path(r"^profesores/?$", profesores_collection),
-    re_path(r"^profesores/(?P<pk>\d+)/?$", profesor_detail),
+    re_path(r"^profesores/?$", coleccion_profesores),
+    re_path(r"^profesores/(?P<pk>\d+)/?$", detalle_profesor),
 ]

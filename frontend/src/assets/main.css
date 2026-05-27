@@ -177,6 +177,7 @@ tr:last-child td {
 .form-group {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.6rem !important;
   margin-bottom: 1.15rem !important;
 }
@@ -195,9 +196,36 @@ label {
 input,
 select,
 textarea {
-  width: 100%;
   background: var(--color-surface);
   color: var(--color-text);
+}
+
+/*
+ * Ajuste de ancho por tipo de atributo para evitar campos excesivamente anchos
+ * en formularios de carga (desktop/tablet).
+ */
+.form-group input:not([type="checkbox"]):not([type="radio"]),
+.form-group select,
+.form-group textarea {
+  width: min(100%, 22rem) !important;
+}
+
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="number"] {
+  width: min(100%, 12rem) !important;
+}
+
+.form-group input[type="tel"] {
+  width: min(100%, 15rem) !important;
+}
+
+.form-group input[type="email"] {
+  width: min(100%, 30rem) !important;
+}
+
+.form-group textarea {
+  width: min(100%, 34rem) !important;
 }
 
 label {
@@ -333,6 +361,12 @@ textarea:focus {
   button {
     width: 100%;
     font-size: 0.95rem;
+  }
+
+  .form-group input:not([type="checkbox"]):not([type="radio"]),
+  .form-group select,
+  .form-group textarea {
+    width: 100% !important;
   }
 
   /* Botones más prominentes en móvil */

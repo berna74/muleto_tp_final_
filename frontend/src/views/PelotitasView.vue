@@ -1,8 +1,8 @@
 <template>
   <div class="pelotitas-view">
     <PelotitasCreate
-      v-if="showCreatePanel"
-      @close="showCreatePanel = false"
+      v-if="mostrarPanelAlta"
+      @close="mostrarPanelAlta = false"
       @saved="handleSaved"
     />
     <PelotitasShow
@@ -11,7 +11,7 @@
       @close="showViewPanel = false"
     />
     <PelotitasList
-      @showCreate="showCreatePanel = true"
+      @showCreate="mostrarPanelAlta = true"
       @showEdit="handleEdit"
       @showView="handleView"
     />
@@ -19,7 +19,7 @@
       v-if="showEditPanel && selectedId"
       :pelotita-id="selectedId"
       @close="showEditPanel = false"
-      @updated="handleUpdated"
+      @updated="manejarActualizado"
     />
   </div>
 </template>
@@ -33,7 +33,7 @@ import PelotitasShow from '@/components/pelotitas/PelotitasShow.vue'
 import { usePelotitasStore } from '@/stores/pelotitas'
 
 const pelotitasStore = usePelotitasStore()
-const showCreatePanel = ref(false)
+const mostrarPanelAlta = ref(false)
 const showEditPanel = ref(false)
 const showViewPanel = ref(false)
 const selectedId = ref<number | null>(null)
@@ -49,13 +49,13 @@ const handleView = (id: number) => {
 }
 
 const handleSaved = async () => {
-  await pelotitasStore.fetchPelotitas()
-  await pelotitasStore.fetchResumen()
+  await pelotitasStore.cargarPelotitas()
+  await pelotitasStore.cargarResumen()
 }
 
-const handleUpdated = async () => {
-  await pelotitasStore.fetchPelotitas()
-  await pelotitasStore.fetchResumen()
+const manejarActualizado = async () => {
+  await pelotitasStore.cargarPelotitas()
+  await pelotitasStore.cargarResumen()
 }
 </script>
 

@@ -2,13 +2,13 @@
   <div class="turnos-list">
     <div class="header">
       <h2>Lista de Turnos</h2>
-      <button @click="showCreateForm = true" class="btn-primary">
+      <button @click="mostrarFormularioAlta = true" class="btn-primary">
         <Icon icon="mdi:plus" width="20" height="20" />
         Nuevo Turno
       </button>
     </div>
 
-    <TurnosCreate v-if="showCreateForm" @close="showCreateForm = false" @created="handleCreated" />
+    <TurnosCreate v-if="mostrarFormularioAlta" @close="mostrarFormularioAlta = false" @created="manejarCreado" />
     <TurnosShow v-if="showingTurnoId" :id="showingTurnoId" @close="showingTurnoId = null" />
 
     <div v-if="loading" class="loading">Cargando turnos...</div>
@@ -62,7 +62,7 @@
         </button>
       </div>
     </div>
-    <TurnosUpdate v-if="editingTurnoId" :id="editingTurnoId" @close="editingTurnoId = null" @updated="handleUpdated" />
+    <TurnosUpdate v-if="editingTurnoId" :id="editingTurnoId" @close="editingTurnoId = null" @updated="manejarActualizado" />
   </div>
 </template>
 
@@ -78,12 +78,12 @@ import TurnosUpdate from './TurnosUpdate.vue'
 const turnosStore = useTurnosStore()
 const { turnos, loading, error, currentPage, totalPages } = storeToRefs(turnosStore)
 
-const showCreateForm = ref(false)
+const mostrarFormularioAlta = ref(false)
 const showingTurnoId = ref<number | null>(null)
 const editingTurnoId = ref<number | null>(null)
 
 onMounted(() => {
-  turnosStore.fetchTurnos()
+  turnosStore.cargarTurnos()
 })
 
 function formatDate(dateString: string) {
@@ -101,28 +101,28 @@ function editTurno(id: number) {
 
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
-    turnosStore.fetchTurnos(page)
+    turnosStore.cargarTurnos(page)
   }
 }
 
 async function confirmDelete(id: number) {
   if (confirm('¿Está seguro de que desea eliminar este turno?')) {
     try {
-      await turnosStore.deleteTurno(id)
+      await turnosStore.eliminarTurno(id)
     } catch (e) {
       alert('Error al eliminar el turno')
     }
   }
 }
 
-function handleCreated() {
-  showCreateForm.value = false
-  turnosStore.fetchTurnos(1)
+function manejarCreado() {
+  mostrarFormularioAlta.value = false
+  turnosStore.cargarTurnos(1)
 }
 
-function handleUpdated() {
+function manejarActualizado() {
   editingTurnoId.value = null
-  turnosStore.fetchTurnos(currentPage.value)
+  turnosStore.cargarTurnos(currentPage.value)
 }
 </script>
 

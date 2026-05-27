@@ -21,7 +21,7 @@
   onMounted(async () => {
     const id = Number(route.params.id)
     if (Number.isFinite(id)) {
-      await store.fetchCategoria(id)
+      await store.cargarCategoria(id)
     }
   })
 </script>

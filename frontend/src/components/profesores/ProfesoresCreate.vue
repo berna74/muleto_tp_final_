@@ -60,7 +60,7 @@ const form = ref({
 
 async function handleSubmit() {
   try {
-    await profesoresStore.createProfesor(form.value)
+    await profesoresStore.crearProfesor(form.value)
     emit('created')
   } catch (error) {
     console.error('Error al crear profesor:', error)

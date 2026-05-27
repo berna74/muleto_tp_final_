@@ -97,13 +97,13 @@ const alumnosOrdenados = computed(() => {
 })
 
 onMounted(() => {
-  alumnosStore.fetchAlumnos()
+  alumnosStore.cargarAlumnos()
 })
 
 async function handleDelete(id: number) {
   if (confirm('¿Está seguro de eliminar este alumno?')) {
     try {
-      await alumnosStore.deleteAlumno(id)
+      await alumnosStore.eliminarAlumno(id)
     } catch (e) {
       console.error('Error al eliminar alumno:', e)
     }
@@ -118,7 +118,7 @@ function handleCreate() {
 
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
-    alumnosStore.fetchAlumnos(page)
+    alumnosStore.cargarAlumnos(page)
   }
 }
 </script>

@@ -13,5 +13,5 @@ urlpatterns = [
     path("api/", include("pagos.urls")),
     path("api/", include("pelotitas.urls")),
     path("admin/", admin.site.urls),
-    path("", lambda request: JsonResponse({"message": "Django backend activo"})),
+    path("", lambda request: JsonResponse({"message": "Backend Django andando"})),
 ]

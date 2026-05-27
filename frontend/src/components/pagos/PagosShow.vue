@@ -80,7 +80,7 @@ const pagosStore = usePagosStore()
 const { pago, loading, error } = storeToRefs(pagosStore)
 
 onMounted(() => {
-  pagosStore.fetchPago(props.pagoId)
+  pagosStore.cargarPago(props.pagoId)
 })
 
 function getTipoBadgeClass(tipo: string): string {

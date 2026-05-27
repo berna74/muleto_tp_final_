@@ -1,10 +1,10 @@
 from django.urls import re_path
 
-from .views import pelotita_detail, pelotitas_collection, pelotitas_resumen
+from .views import detalle_pelotita, coleccion_pelotitas, resumen_pelotitas
 
 
 urlpatterns = [
-    re_path(r"^pelotitas/?$", pelotitas_collection),
-    re_path(r"^pelotitas/(?P<pk>\d+)/?$", pelotita_detail),
-    re_path(r"^pelotitas/resumen/?$", pelotitas_resumen),
+    re_path(r"^pelotitas/?$", coleccion_pelotitas),
+    re_path(r"^pelotitas/(?P<pk>\d+)/?$", detalle_pelotita),
+    re_path(r"^pelotitas/resumen/?$", resumen_pelotitas),
 ]

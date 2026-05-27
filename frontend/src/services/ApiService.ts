@@ -1,70 +1,71 @@
 import {instance as axios} from '../plugins/axios';
 
-class ApiService {
-  static async getAll(url: string) {
-    const response = await ApiService.get(url);
+class ServicioApi {
+  static async obtenerTodo(url: string) {
+    const response = await ServicioApi.obtener(url);
     return response.data;
   }
 
-  static async getOne(url: string, id: number) {
-    const response = await ApiService.get(`${url}/${id}`);
+  static async obtenerUno(url: string, id: number) {
+    const response = await ServicioApi.obtener(`${url}/${id}`);
     return response.data;
   }
 
-  static async create(url: string, data: object) {
-    const response = await ApiService.post(url, data);
+  static async crear(url: string, data: object) {
+    const response = await ServicioApi.enviar(url, data);
     return response.data;
   }
 
-  static async update(url: string, id: number, data: object) {
-    const response = await ApiService.put(`${url}/${id}`, data);
+  static async actualizar(url: string, id: number, data: object) {
+    const response = await ServicioApi.modificar(`${url}/${id}`, data);
     return response.data;
   }
 
-  static async destroy(url: string, id: number) {
-    const response = await ApiService.delete(`${url}/${id}`);
+  static async eliminarUno(url: string, id: number) {
+    const response = await ServicioApi.eliminar(`${url}/${id}`);
     return response.data;
   }
 
-  static async get(url: string) {
+  static async obtener(url: string) {
     try {
       const response = await axios.get(url);
       return response;
     } catch (error) {
-      console.error('Error en GET:', error);
+      console.error('Che, falló la consulta GET:', error);
       throw error;
     }
   }
 
-  static async post(url: string, data: object) {
+  static async enviar(url: string, data: object) {
     try {
       const response = await axios.post(url, data);
       return response;
     } catch (error) {
-      console.error('Error en POST:', error);
+      console.error('Che, falló el envío POST:', error);
       throw error;
     }
   }
 
-  static async put(url: string, data: object) {
+  static async modificar(url: string, data: object) {
     try {
       const response = await axios.put(url, data);
       return response;
     } catch (error) {
-      console.error('Error en PUT:', error);
+      console.error('Che, falló la actualización PUT:', error);
       throw error;
     }
   }
 
-  static async delete(url: string) {
+  static async eliminar(url: string) {
     try {
       const response = await axios.delete(url);
       return response;
     } catch (error) {
-      console.error('Error en DELETE:', error);
+      console.error('Che, falló la baja DELETE:', error);
       throw error;
     }
   }
+
 }
 
-export default ApiService;
+export default ServicioApi;

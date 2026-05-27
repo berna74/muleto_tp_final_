@@ -34,7 +34,7 @@
   })
   
   onMounted(async () => {
-    await store.fetchCategorias()
+    await store.cargarCategorias()
     const id = route.params.id
     const found = store.categorias.find((cat) => cat.id == parseInt(id as string))
     if (found) {
@@ -55,7 +55,7 @@
       if (!categoria.value.id) {
         throw new Error('ID de categoría inválido')
       }
-      await store.updateCategoria(categoria.value.id, categoria.value)
+      await store.actualizarCategoria(categoria.value.id, categoria.value)
       alert('Categoría modificada exitosamente')
       router.push({ name: 'categorias_list' })
     } catch (error) {

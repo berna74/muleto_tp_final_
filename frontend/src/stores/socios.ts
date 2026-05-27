@@ -13,12 +13,12 @@ export const useSociosStore = defineStore('socios', () => {
   const totalCount = ref(0)
   const pageSize = ref(10)
 
-  async function fetchSocios(page: number = 1) {
+  async function cargarSocios(page: number = 1) {
     loading.value = true
     error.value = null
     try {
       currentPage.value = page
-      const response = await ApiService.get(`/socios/?page=${page}`)
+      const response = await ApiService.obtener(`/socios/?page=${page}`)
       socios.value = response.data.items || []
       totalPages.value = response.data.total_pages || 1
       totalCount.value = response.data.total_count || 0
@@ -30,11 +30,11 @@ export const useSociosStore = defineStore('socios', () => {
     }
   }
 
-  async function fetchSocio(id: number) {
+  async function cargarSocio(id: number) {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get(`/socios/${id}`)
+      const response = await ApiService.obtener(`/socios/${id}`)
       socio.value = response.data
     } catch (err: any) {
       error.value = err.message || 'Error al cargar el socio'
@@ -43,12 +43,12 @@ export const useSociosStore = defineStore('socios', () => {
     }
   }
 
-  async function createSocio(socioData: any) {
+  async function crearSocio(socioData: any) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.post('/socios/', socioData)
-      await fetchSocios(currentPage.value)
+      await ApiService.enviar('/socios/', socioData)
+      await cargarSocios(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al crear el socio'
       throw err
@@ -57,12 +57,12 @@ export const useSociosStore = defineStore('socios', () => {
     }
   }
 
-  async function updateSocio(id: number, socioData: any) {
+  async function actualizarSocio(id: number, socioData: any) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.put(`/socios/${id}`, socioData)
-      await fetchSocios(currentPage.value)
+      await ApiService.modificar(`/socios/${id}`, socioData)
+      await cargarSocios(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al actualizar el socio'
       throw err
@@ -71,12 +71,12 @@ export const useSociosStore = defineStore('socios', () => {
     }
   }
 
-  async function deleteSocio(id: number) {
+  async function eliminarSocio(id: number) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.delete(`/socios/${id}`)
-      await fetchSocios(currentPage.value)
+      await ApiService.eliminar(`/socios/${id}`)
+      await cargarSocios(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al eliminar el socio'
       throw err
@@ -94,10 +94,10 @@ export const useSociosStore = defineStore('socios', () => {
     totalPages,
     totalCount,
     pageSize,
-    fetchSocios,
-    fetchSocio,
-    createSocio,
-    updateSocio,
-    deleteSocio
+    cargarSocios,
+    cargarSocio,
+    crearSocio,
+    actualizarSocio,
+    eliminarSocio
   }
 })

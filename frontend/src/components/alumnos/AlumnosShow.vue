@@ -75,7 +75,7 @@ const alumnosStore = useAlumnosStore()
 const { alumno, loading, error } = storeToRefs(alumnosStore)
 
 onMounted(() => {
-  alumnosStore.fetchAlumno(props.alumnoId)
+  alumnosStore.cargarAlumno(props.alumnoId)
 })
 
 function formatDate(dateString: string): string {

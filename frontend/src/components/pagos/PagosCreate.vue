@@ -133,9 +133,9 @@ const submitLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(() => {
-  sociosStore.fetchSocios()
-  alumnosStore.fetchAlumnos()
-  profesoresStore.fetchProfesores()
+  sociosStore.cargarSocios()
+  alumnosStore.cargarAlumnos()
+  profesoresStore.cargarProfesores()
 })
 
 function handleTipoChange() {
@@ -167,7 +167,7 @@ async function handleSubmit() {
       pagoData.socio_id = null
     }
     
-    await pagosStore.createPago(pagoData)
+    await pagosStore.crearPago(pagoData)
     emit('created')
   } catch (e: any) {
     error.value = e.response?.data?.mensaje || 'Error al registrar pago'

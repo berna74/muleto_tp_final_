@@ -80,7 +80,7 @@ async function handleSubmit() {
       .map(j => j.trim())
       .filter(j => j.length > 0)
     
-    await turnosStore.createTurno({
+    await turnosStore.crearTurno({
       ...formData.value,
       jugadores
     })

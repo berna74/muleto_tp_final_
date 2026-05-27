@@ -75,7 +75,7 @@ const loading = ref(true)
 
 onMounted(async () => {
   try {
-    await pelotitasStore.fetchPelotita(props.pelotitaId)
+    await pelotitasStore.cargarPelotita(props.pelotitaId)
   } catch (error) {
     console.error('Error al cargar pelotita:', error)
     alert('Error al cargar los datos')

@@ -13,12 +13,12 @@ export const useProfesoresStore = defineStore('profesores', () => {
   const totalCount = ref(0)
   const pageSize = ref(10)
 
-  async function fetchProfesores(page: number = 1) {
+  async function cargarProfesores(page: number = 1) {
     loading.value = true
     error.value = null
     try {
       currentPage.value = page
-      const response = await ApiService.get(`/profesores/?page=${page}`)
+      const response = await ApiService.obtener(`/profesores/?page=${page}`)
       profesores.value = response.data.items || []
       totalPages.value = response.data.total_pages || 1
       totalCount.value = response.data.total_count || 0
@@ -30,11 +30,11 @@ export const useProfesoresStore = defineStore('profesores', () => {
     }
   }
 
-  async function fetchProfesor(id: number) {
+  async function cargarProfesor(id: number) {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get(`/profesores/${id}`)
+      const response = await ApiService.obtener(`/profesores/${id}`)
       profesor.value = response.data
     } catch (err: any) {
       error.value = err.message || 'Error al cargar el profesor'
@@ -43,12 +43,12 @@ export const useProfesoresStore = defineStore('profesores', () => {
     }
   }
 
-  async function createProfesor(profesorData: Omit<Profesor, 'id'>) {
+  async function crearProfesor(profesorData: Omit<Profesor, 'id'>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.post('/profesores/', profesorData)
-      await fetchProfesores(currentPage.value)
+      await ApiService.enviar('/profesores/', profesorData)
+      await cargarProfesores(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al crear el profesor'
       throw err
@@ -57,12 +57,12 @@ export const useProfesoresStore = defineStore('profesores', () => {
     }
   }
 
-  async function updateProfesor(id: number, profesorData: Partial<Profesor>) {
+  async function actualizarProfesor(id: number, profesorData: Partial<Profesor>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.put(`/profesores/${id}`, profesorData)
-      await fetchProfesores(currentPage.value)
+      await ApiService.modificar(`/profesores/${id}`, profesorData)
+      await cargarProfesores(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al actualizar el profesor'
       throw err
@@ -71,12 +71,12 @@ export const useProfesoresStore = defineStore('profesores', () => {
     }
   }
 
-  async function deleteProfesor(id: number) {
+  async function eliminarProfesor(id: number) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.delete(`/profesores/${id}`)
-      await fetchProfesores(currentPage.value)
+      await ApiService.eliminar(`/profesores/${id}`)
+      await cargarProfesores(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al eliminar el profesor'
       throw err
@@ -94,10 +94,10 @@ export const useProfesoresStore = defineStore('profesores', () => {
     totalPages,
     totalCount,
     pageSize,
-    fetchProfesores,
-    fetchProfesor,
-    createProfesor,
-    updateProfesor,
-    deleteProfesor
+    cargarProfesores,
+    cargarProfesor,
+    crearProfesor,
+    actualizarProfesor,
+    eliminarProfesor
   }
 })

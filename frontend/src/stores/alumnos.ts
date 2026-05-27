@@ -13,44 +13,44 @@ export const useAlumnosStore = defineStore('alumnos', () => {
   const totalCount = ref(0)
   const pageSize = ref(10)
 
-  async function fetchAlumnos(page: number = 1) {
+  async function cargarAlumnos(page: number = 1) {
     loading.value = true
     error.value = null
     try {
       currentPage.value = page
-      const response = await ApiService.get(`/alumnos/?page=${page}`)
+      const response = await ApiService.obtener(`/alumnos/?page=${page}`)
       alumnos.value = response.data.items || []
       totalPages.value = response.data.total_pages || 1
       totalCount.value = response.data.total_count || 0
       pageSize.value = response.data.page_size || 10
     } catch (e: any) {
       error.value = e.message
-      console.error('Error fetching alumnos:', e)
+      console.error('Error al cargar alumnos:', e)
     } finally {
       loading.value = false
     }
   }
 
-  async function fetchAlumno(id: number) {
+  async function cargarAlumno(id: number) {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get(`/alumnos/${id}`)
+      const response = await ApiService.obtener(`/alumnos/${id}`)
       alumno.value = response.data
     } catch (e: any) {
       error.value = e.message
-      console.error('Error fetching alumno:', e)
+      console.error('Error al cargar alumno:', e)
     } finally {
       loading.value = false
     }
   }
 
-  async function createAlumno(alumnoData: Partial<Alumno>) {
+  async function crearAlumno(alumnoData: Partial<Alumno>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.post('/alumnos/', alumnoData)
-      await fetchAlumnos(currentPage.value)
+      await ApiService.enviar('/alumnos/', alumnoData)
+      await cargarAlumnos(currentPage.value)
     } catch (e: any) {
       error.value = e.message
       throw e
@@ -59,12 +59,12 @@ export const useAlumnosStore = defineStore('alumnos', () => {
     }
   }
 
-  async function updateAlumno(id: number, alumnoData: Partial<Alumno>) {
+  async function actualizarAlumno(id: number, alumnoData: Partial<Alumno>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.put(`/alumnos/${id}`, alumnoData)
-      await fetchAlumnos(currentPage.value)
+      await ApiService.modificar(`/alumnos/${id}`, alumnoData)
+      await cargarAlumnos(currentPage.value)
     } catch (e: any) {
       error.value = e.message
       throw e
@@ -73,12 +73,12 @@ export const useAlumnosStore = defineStore('alumnos', () => {
     }
   }
 
-  async function deleteAlumno(id: number) {
+  async function eliminarAlumno(id: number) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.delete(`/alumnos/${id}`)
-      await fetchAlumnos(currentPage.value)
+      await ApiService.eliminar(`/alumnos/${id}`)
+      await cargarAlumnos(currentPage.value)
     } catch (e: any) {
       error.value = e.message
       throw e
@@ -96,10 +96,10 @@ export const useAlumnosStore = defineStore('alumnos', () => {
     totalPages,
     totalCount,
     pageSize,
-    fetchAlumnos,
-    fetchAlumno,
-    createAlumno,
-    updateAlumno,
-    deleteAlumno
+    cargarAlumnos,
+    cargarAlumno,
+    crearAlumno,
+    actualizarAlumno,
+    eliminarAlumno
   }
 })

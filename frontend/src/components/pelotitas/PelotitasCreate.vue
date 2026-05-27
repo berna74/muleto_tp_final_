@@ -191,8 +191,8 @@ const formData = ref<Pelotita>({
 })
 
 onMounted(() => {
-  sociosStore.fetchSocios()
-  alumnosStore.fetchAlumnos()
+  sociosStore.cargarSocios()
+  alumnosStore.cargarAlumnos()
 })
 
 const calculateTotal = () => {
@@ -218,7 +218,7 @@ watch(() => formData.value.tipo, (newTipo) => {
 const handleSubmit = async () => {
   loading.value = true
   try {
-    await pelotitasStore.createPelotita(formData.value)
+    await pelotitasStore.crearPelotita(formData.value)
     emit('saved')
     emit('close')
   } catch (error) {

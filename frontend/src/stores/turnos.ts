@@ -13,77 +13,77 @@ export const useTurnosStore = defineStore('turnos', () => {
   const totalCount = ref(0)
   const pageSize = ref(10)
 
-  async function fetchTurnos(page: number = 1) {
+  async function cargarTurnos(page: number = 1) {
     loading.value = true
     error.value = null
     try {
       currentPage.value = page
-      const response = await ApiService.get(`/turnos/?page=${page}`)
+      const response = await ApiService.obtener(`/turnos/?page=${page}`)
       turnos.value = response.data.items || []
       totalPages.value = response.data.total_pages || 1
       totalCount.value = response.data.total_count || 0
       pageSize.value = response.data.page_size || 10
     } catch (e: any) {
       error.value = e.message || 'Error al cargar turnos'
-      console.error('Error fetching turnos:', e)
+      console.error('Error al cargar turnos:', e)
     } finally {
       loading.value = false
     }
   }
 
-  async function fetchTurno(id: number) {
+  async function cargarTurno(id: number) {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get(`/turnos/${id}`)
+      const response = await ApiService.obtener(`/turnos/${id}`)
       turno.value = response.data
     } catch (e: any) {
       error.value = e.message || 'Error al cargar turno'
-      console.error('Error fetching turno:', e)
+      console.error('Error al cargar turno:', e)
     } finally {
       loading.value = false
     }
   }
 
-  async function createTurno(turnoData: Partial<Turno>) {
+  async function crearTurno(turnoData: Partial<Turno>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.post('/turnos/', turnoData)
-      await fetchTurnos(currentPage.value)
+      await ApiService.enviar('/turnos/', turnoData)
+      await cargarTurnos(currentPage.value)
     } catch (e: any) {
       error.value = e.message || 'Error al crear turno'
-      console.error('Error creating turno:', e)
+      console.error('Error al crear turno:', e)
       throw e
     } finally {
       loading.value = false
     }
   }
 
-  async function updateTurno(id: number, turnoData: Partial<Turno>) {
+  async function actualizarTurno(id: number, turnoData: Partial<Turno>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.put(`/turnos/${id}`, turnoData)
-      await fetchTurnos(currentPage.value)
+      await ApiService.modificar(`/turnos/${id}`, turnoData)
+      await cargarTurnos(currentPage.value)
     } catch (e: any) {
       error.value = e.message || 'Error al actualizar turno'
-      console.error('Error updating turno:', e)
+      console.error('Error al actualizar turno:', e)
       throw e
     } finally {
       loading.value = false
     }
   }
 
-  async function deleteTurno(id: number) {
+  async function eliminarTurno(id: number) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.delete(`/turnos/${id}`)
-      await fetchTurnos(currentPage.value)
+      await ApiService.eliminar(`/turnos/${id}`)
+      await cargarTurnos(currentPage.value)
     } catch (e: any) {
       error.value = e.message || 'Error al eliminar turno'
-      console.error('Error deleting turno:', e)
+      console.error('Error al eliminar turno:', e)
       throw e
     } finally {
       loading.value = false
@@ -99,10 +99,10 @@ export const useTurnosStore = defineStore('turnos', () => {
     totalPages,
     totalCount,
     pageSize,
-    fetchTurnos,
-    fetchTurno,
-    createTurno,
-    updateTurno,
-    deleteTurno
+    cargarTurnos,
+    cargarTurno,
+    crearTurno,
+    actualizarTurno,
+    eliminarTurno
   }
 })

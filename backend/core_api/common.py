@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse
 
 
-def parse_json(request):
+def parsear_json(request):
     try:
         body = request.body.decode("utf-8") if request.body else "{}"
         return json.loads(body or "{}")
@@ -11,11 +11,11 @@ def parse_json(request):
         return None
 
 
-def response_list(items, status=200):
+def respuesta_lista(items, status=200):
     return JsonResponse(items, safe=False, status=status)
 
 
-def response_paginated(items, page=1, page_size=10):
+def respuesta_paginada(items, page=1, page_size=10):
     total_count = len(items)
     total_pages = (total_count + page_size - 1) // page_size
     start = (page - 1) * page_size
@@ -32,11 +32,11 @@ def response_paginated(items, page=1, page_size=10):
     )
 
 
-def response_item(item, status=200):
+def respuesta_item(item, status=200):
     return JsonResponse(item, status=status)
 
 
-def serialize_categoria(categoria):
+def serializar_categoria(categoria):
     return {
         "id": categoria.id,
         "nombre": categoria.nombre,
@@ -44,7 +44,7 @@ def serialize_categoria(categoria):
     }
 
 
-def serialize_profesor(profesor):
+def serializar_profesor(profesor):
     if not profesor:
         return None
     return {
@@ -58,7 +58,7 @@ def serialize_profesor(profesor):
     }
 
 
-def serialize_alumno(alumno):
+def serializar_alumno(alumno):
     return {
         "id": alumno.id,
         "nombre": alumno.nombre,
@@ -67,15 +67,15 @@ def serialize_alumno(alumno):
         "email": alumno.email,
         "telefono": alumno.telefono,
         "fecha_inscripcion": alumno.fecha_inscripcion.isoformat(),
-        "profesor": serialize_profesor(alumno.profesor),
+        "profesor": serializar_profesor(alumno.profesor),
         "nivel": alumno.nivel or "",
         "activo": alumno.activo,
     }
 
 
-def serialize_socio(socio):
+def serializar_socio(socio):
     profesor = socio.profesor
-    categorias = [serialize_categoria(item.categoria) for item in socio.sociocategoria_set.select_related("categoria").all()]
+    categorias = [serializar_categoria(item.categoria) for item in socio.sociocategoria_set.select_related("categoria").all()]
     return {
         "id": socio.id,
         "nombre": socio.nombre,
@@ -86,13 +86,13 @@ def serialize_socio(socio):
         "fecha_inscripcion": socio.fecha_inscripcion.isoformat(),
         "profesor_id": profesor.id if profesor else None,
         "profesor_nombre": f"{profesor.nombre} {profesor.apellido}" if profesor else None,
-        "profesor": serialize_profesor(profesor),
+        "profesor": serializar_profesor(profesor),
         "categorias": categorias,
         "registra_deuda": socio.registra_deuda,
     }
 
 
-def serialize_turno(turno):
+def serializar_turno(turno):
     jugadores = list(turno.jugador_items.values_list("jugador_nombre", flat=True))
     socio_nombre = None
     if turno.socio_reserva:
@@ -110,7 +110,7 @@ def serialize_turno(turno):
     }
 
 
-def serialize_pago(pago):
+def serializar_pago(pago):
     socio_nombre = ""
     alumno_nombre = ""
     profesor_nombre = ""
@@ -138,7 +138,7 @@ def serialize_pago(pago):
     }
 
 
-def serialize_pelotita(pelotita):
+def serializar_pelotita(pelotita):
     return {
         "id": pelotita.id,
         "fecha": pelotita.fecha.isoformat(),

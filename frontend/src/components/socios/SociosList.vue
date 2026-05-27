@@ -2,19 +2,19 @@
   <div class="socios-list">
     <div class="header">
       <h2>Lista de Socios</h2>
-      <button @click="showCreateForm = true" class="btn-primary">
+      <button @click="mostrarFormularioAlta = true" class="btn-primary">
         <Icon icon="mdi:plus" width="20" height="20" />
         Nuevo Socio
       </button>
     </div>
 
-    <SociosCreate v-if="showCreateForm" @close="showCreateForm = false" @created="handleCreated" />
+    <SociosCreate v-if="mostrarFormularioAlta" @close="mostrarFormularioAlta = false" @created="manejarCreado" />
     <SociosShow v-if="showViewForm && selectedSocio" :socio="selectedSocio" @close="closeViewForm" />
     <SociosUpdate
-      v-if="showUpdateForm && selectedSocio"
+      v-if="mostrarFormularioEdicion && selectedSocio"
       :socio="selectedSocio"
-      @close="closeUpdateForm"
-      @updated="handleUpdated"
+      @close="cerrarFormularioEdicion"
+      @updated="manejarActualizado"
     />
 
     <div v-if="loading" class="loading">Cargando socios...</div>
@@ -63,7 +63,7 @@
               <button @click="viewSocio(socio)" class="btn-icon" title="Ver">
                 <Icon icon="mdi:eye" width="18" height="18" />
               </button>
-              <button @click="openUpdateForm(socio)" class="btn-icon" title="Editar">
+              <button @click="abrirFormularioEdicion(socio)" class="btn-icon" title="Editar">
                 <Icon icon="mdi:pencil" width="18" height="18" />
               </button>
               <button @click="confirmDelete(socio.id)" class="btn-icon btn-delete" title="Eliminar">
@@ -118,23 +118,23 @@ const sociosOrdenados = computed(() => {
   })
 })
 
-const showCreateForm = ref(false)
-const showUpdateForm = ref(false)
+const mostrarFormularioAlta = ref(false)
+const mostrarFormularioEdicion = ref(false)
 const showViewForm = ref(false)
 const selectedSocio = ref<Socio | null>(null)
 
 onMounted(() => {
-  sociosStore.fetchSocios()
+  sociosStore.cargarSocios()
 })
 
-function handleCreated() {
-  showCreateForm.value = false
-  sociosStore.fetchSocios(1)
+function manejarCreado() {
+  mostrarFormularioAlta.value = false
+  sociosStore.cargarSocios(1)
 }
 
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
-    sociosStore.fetchSocios(page)
+    sociosStore.cargarSocios(page)
   }
 }
 
@@ -143,13 +143,13 @@ function viewSocio(socio: Socio) {
   showViewForm.value = true
 }
 
-function openUpdateForm(socio: Socio) {
+function abrirFormularioEdicion(socio: Socio) {
   selectedSocio.value = socio
-  showUpdateForm.value = true
+  mostrarFormularioEdicion.value = true
 }
 
-function closeUpdateForm() {
-  showUpdateForm.value = false
+function cerrarFormularioEdicion() {
+  mostrarFormularioEdicion.value = false
   selectedSocio.value = null
 }
 
@@ -158,14 +158,14 @@ function closeViewForm() {
   selectedSocio.value = null
 }
 
-function handleUpdated() {
-  closeUpdateForm()
-  sociosStore.fetchSocios(currentPage.value)
+function manejarActualizado() {
+  cerrarFormularioEdicion()
+  sociosStore.cargarSocios(currentPage.value)
 }
 
 function confirmDelete(id: number) {
   if (confirm('Esta seguro de que desea eliminar este socio?')) {
-    sociosStore.deleteSocio(id)
+    sociosStore.eliminarSocio(id)
   }
 }
 </script>

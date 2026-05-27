@@ -3,7 +3,7 @@
     <PagosCreate 
       v-if="showCreate" 
       @close="showCreate = false" 
-      @created="handleCreated" 
+      @created="manejarCreado" 
     />
     <PagosList 
       @create="showCreate = true" 
@@ -14,7 +14,7 @@
       v-if="showEdit && selectedPagoId" 
       :pago-id="selectedPagoId"
       @close="showEdit = false" 
-      @updated="handleUpdated" 
+      @updated="manejarActualizado" 
     />
     <PagosShow 
       v-if="showView && selectedPagoId" 
@@ -36,7 +36,7 @@ const showEdit = ref(false)
 const showView = ref(false)
 const selectedPagoId = ref<number | null>(null)
 
-function handleCreated() {
+function manejarCreado() {
   showCreate.value = false
 }
 
@@ -50,7 +50,7 @@ function handleShow(id: number) {
   showView.value = true
 }
 
-function handleUpdated() {
+function manejarActualizado() {
   showEdit.value = false
   selectedPagoId.value = null
 }

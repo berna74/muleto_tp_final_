@@ -9,11 +9,11 @@ export const useCanchasStore = defineStore('canchas', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  async function fetchCanchas() {
+  async function cargarCanchas() {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get('/canchas/')
+      const response = await ApiService.obtener('/canchas/')
       canchas.value = response.data
     } catch (err: any) {
       error.value = err.message || 'Error al cargar las canchas'
@@ -22,11 +22,11 @@ export const useCanchasStore = defineStore('canchas', () => {
     }
   }
 
-  async function fetchCancha(id: number) {
+  async function cargarCancha(id: number) {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get(`/canchas/${id}`)
+      const response = await ApiService.obtener(`/canchas/${id}`)
       cancha.value = response.data
     } catch (err: any) {
       error.value = err.message || 'Error al cargar la cancha'
@@ -35,12 +35,12 @@ export const useCanchasStore = defineStore('canchas', () => {
     }
   }
 
-  async function createCancha(canchaData: Omit<Cancha, 'id'>) {
+  async function crearCancha(canchaData: Omit<Cancha, 'id'>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.post('/canchas/', canchaData)
-      await fetchCanchas()
+      await ApiService.enviar('/canchas/', canchaData)
+      await cargarCanchas()
     } catch (err: any) {
       error.value = err.message || 'Error al crear la cancha'
       throw err
@@ -49,12 +49,12 @@ export const useCanchasStore = defineStore('canchas', () => {
     }
   }
 
-  async function updateCancha(id: number, canchaData: Partial<Cancha>) {
+  async function actualizarCancha(id: number, canchaData: Partial<Cancha>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.put(`/canchas/${id}`, canchaData)
-      await fetchCanchas()
+      await ApiService.modificar(`/canchas/${id}`, canchaData)
+      await cargarCanchas()
     } catch (err: any) {
       error.value = err.message || 'Error al actualizar la cancha'
       throw err
@@ -63,12 +63,12 @@ export const useCanchasStore = defineStore('canchas', () => {
     }
   }
 
-  async function deleteCancha(id: number) {
+  async function eliminarCancha(id: number) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.delete(`/canchas/${id}`)
-      await fetchCanchas()
+      await ApiService.eliminar(`/canchas/${id}`)
+      await cargarCanchas()
     } catch (err: any) {
       error.value = err.message || 'Error al eliminar la cancha'
       throw err
@@ -82,10 +82,10 @@ export const useCanchasStore = defineStore('canchas', () => {
     cancha,
     loading,
     error,
-    fetchCanchas,
-    fetchCancha,
-    createCancha,
-    updateCancha,
-    deleteCancha
+    cargarCanchas,
+    cargarCancha,
+    crearCancha,
+    actualizarCancha,
+    eliminarCancha
   }
 })

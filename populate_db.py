@@ -43,6 +43,9 @@ tipos_pelota = ["Práctica", "Competición", "Premium", "Importada", "Nacional"]
 
 metodos_pago = ["Efectivo", "Tarjeta Débito", "Tarjeta Crédito", "Transferencia Bancaria", "Cheque"]
 
+DNI_MIN = 20_000_000
+DNI_MAX = 30_000_000
+
 def random_nombre():
     return random.choice(nombres)
 
@@ -59,8 +62,10 @@ def random_email(nombre, apellido, suffix=""):
 def random_telefono():
     return f"29{random.randint(10000000, 99999999)}"
 
-def unique_dni(prefix, index):
-    return f"{prefix}{index:05d}"
+def build_unique_dnis(total):
+    if total > (DNI_MAX - DNI_MIN + 1):
+        raise ValueError("No hay rango suficiente para generar DNIs únicos")
+    return random.sample(range(DNI_MIN, DNI_MAX + 1), total)
 
 def random_date(start_year=2020, end_year=2026):
     start = datetime(start_year, 1, 1)
@@ -96,10 +101,11 @@ def populate_profesores(conn):
     cursor = conn.cursor()
     profesores_ids = []
     
+    dnis = build_unique_dnis(50)
     for i in range(50):
         nombre = random_nombre()
         apellido = random_apellido()
-        dni = unique_dni("PROF", i + 1)
+        dni = str(dnis[i])
         email = random_email(nombre, apellido, f"prof{i + 1}")
         telefono = random_telefono()
         horarios = f"Lunes a Viernes, 10:00-18:00"
@@ -120,10 +126,11 @@ def populate_socios(conn, profesores_ids):
     cursor = conn.cursor()
     socios_ids = []
     
+    dnis = build_unique_dnis(50)
     for i in range(50):
         nombre = random_nombre()
         apellido = random_apellido()
-        dni = unique_dni("SOC", i + 1)
+        dni = str(dnis[i])
         email = random_email(nombre, apellido, f"socio{i + 1}")
         telefono = random_telefono()
         fecha_inscripcion = random_date().date()
@@ -168,10 +175,11 @@ def populate_alumnos(conn, profesores_ids):
     cursor = conn.cursor()
     alumnos_ids = []
     
+    dnis = build_unique_dnis(50)
     for i in range(50):
         nombre = random_nombre()
         apellido = random_apellido()
-        dni = unique_dni("ALU", i + 1)
+        dni = str(dnis[i])
         email = random_email(nombre, apellido, f"alumno{i + 1}")
         telefono = random_telefono()
         fecha_inscripcion = random_date().date()

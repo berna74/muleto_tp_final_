@@ -13,44 +13,44 @@ export const usePagosStore = defineStore('pagos', () => {
   const totalCount = ref(0)
   const pageSize = ref(10)
 
-  async function fetchPagos(page: number = 1) {
+  async function cargarPagos(page: number = 1) {
     loading.value = true
     error.value = null
     try {
       currentPage.value = page
-      const response = await ApiService.get(`/pagos/?page=${page}`)
+      const response = await ApiService.obtener(`/pagos/?page=${page}`)
       pagos.value = response.data.items || []
       totalPages.value = response.data.total_pages || 1
       totalCount.value = response.data.total_count || 0
       pageSize.value = response.data.page_size || 10
     } catch (e: any) {
       error.value = e.message || 'Error al cargar pagos'
-      console.error('Error fetching pagos:', e)
+      console.error('Error al cargar pagos:', e)
     } finally {
       loading.value = false
     }
   }
 
-  async function fetchPago(id: number) {
+  async function cargarPago(id: number) {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get(`/pagos/${id}`)
+      const response = await ApiService.obtener(`/pagos/${id}`)
       pago.value = response.data
     } catch (e: any) {
       error.value = e.message || 'Error al cargar pago'
-      console.error('Error fetching pago:', e)
+      console.error('Error al cargar pago:', e)
     } finally {
       loading.value = false
     }
   }
 
-  async function createPago(pagoData: Partial<Pago>) {
+  async function crearPago(pagoData: Partial<Pago>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.post('/pagos/', pagoData)
-      await fetchPagos(currentPage.value)
+      await ApiService.enviar('/pagos/', pagoData)
+      await cargarPagos(currentPage.value)
     } catch (e: any) {
       error.value = e.message || 'Error al crear pago'
       throw e
@@ -59,12 +59,12 @@ export const usePagosStore = defineStore('pagos', () => {
     }
   }
 
-  async function updatePago(id: number, pagoData: Partial<Pago>) {
+  async function actualizarPago(id: number, pagoData: Partial<Pago>) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.put(`/pagos/${id}`, pagoData)
-      await fetchPagos(currentPage.value)
+      await ApiService.modificar(`/pagos/${id}`, pagoData)
+      await cargarPagos(currentPage.value)
     } catch (e: any) {
       error.value = e.message || 'Error al actualizar pago'
       throw e
@@ -73,12 +73,12 @@ export const usePagosStore = defineStore('pagos', () => {
     }
   }
 
-  async function deletePago(id: number) {
+  async function eliminarPago(id: number) {
     loading.value = true
     error.value = null
     try {
-      await ApiService.delete(`/pagos/${id}`)
-      await fetchPagos(currentPage.value)
+      await ApiService.eliminar(`/pagos/${id}`)
+      await cargarPagos(currentPage.value)
     } catch (e: any) {
       error.value = e.message || 'Error al eliminar pago'
       throw e
@@ -96,10 +96,10 @@ export const usePagosStore = defineStore('pagos', () => {
     totalPages,
     totalCount,
     pageSize,
-    fetchPagos,
-    fetchPago,
-    createPago,
-    updatePago,
-    deletePago
+    cargarPagos,
+    cargarPago,
+    crearPago,
+    actualizarPago,
+    eliminarPago
   }
 })

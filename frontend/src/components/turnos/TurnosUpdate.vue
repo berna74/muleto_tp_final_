@@ -89,7 +89,7 @@ const submitLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(async () => {
-  await turnosStore.fetchTurno(props.id)
+  await turnosStore.cargarTurno(props.id)
   if (turno.value) {
     formData.value = {
       cancha: turno.value.cancha,
@@ -113,7 +113,7 @@ async function handleSubmit() {
       .map(j => j.trim())
       .filter(j => j.length > 0)
     
-    await turnosStore.updateTurno(props.id, {
+    await turnosStore.actualizarTurno(props.id, {
       ...formData.value,
       jugadores
     })

@@ -96,7 +96,7 @@ const submitLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(() => {
-  profesoresStore.fetchProfesores()
+  profesoresStore.cargarProfesores()
 })
 
 async function handleSubmit() {
@@ -110,7 +110,7 @@ async function handleSubmit() {
   }
   
   try {
-    await alumnosStore.createAlumno(formData.value)
+    await alumnosStore.crearAlumno(formData.value)
     emit('created')
   } catch (e: any) {
     error.value = e.response?.data?.mensaje || 'Error al crear alumno'

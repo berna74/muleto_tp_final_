@@ -84,7 +84,7 @@ const pagosStore = usePagosStore()
 const { pagos, loading, error, currentPage, totalPages } = storeToRefs(pagosStore)
 
 onMounted(() => {
-  pagosStore.fetchPagos()
+  pagosStore.cargarPagos()
 })
 
 function formatTipo(tipo: string): string {
@@ -127,7 +127,7 @@ function getBeneficiario(pago: Pago): string {
 async function handleDelete(id: number) {
   if (confirm('¿Está seguro de eliminar este pago?')) {
     try {
-      await pagosStore.deletePago(id)
+      await pagosStore.eliminarPago(id)
     } catch (e) {
       console.error('Error al eliminar pago:', e)
     }
@@ -136,7 +136,7 @@ async function handleDelete(id: number) {
 
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
-    pagosStore.fetchPagos(page)
+    pagosStore.cargarPagos(page)
   }
 }
 

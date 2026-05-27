@@ -136,12 +136,12 @@ const submitLoading = ref(false)
 const error = ref<string | null>(null)
 
 onMounted(async () => {
-  await sociosStore.fetchSocios()
-  await alumnosStore.fetchAlumnos()
-  await profesoresStore.fetchProfesores()
+  await sociosStore.cargarSocios()
+  await alumnosStore.cargarAlumnos()
+  await profesoresStore.cargarProfesores()
   
   // Cargar datos del pago
-  await pagosStore.fetchPago(props.pagoId)
+  await pagosStore.cargarPago(props.pagoId)
   const pago = pagosStore.pago
   
   if (pago) {
@@ -189,7 +189,7 @@ async function handleSubmit() {
       pagoData.socio_id = null
     }
     
-    await pagosStore.updatePago(props.pagoId, pagoData)
+    await pagosStore.actualizarPago(props.pagoId, pagoData)
     emit('updated')
   } catch (e: any) {
     error.value = e.response?.data?.mensaje || 'Error al actualizar pago'

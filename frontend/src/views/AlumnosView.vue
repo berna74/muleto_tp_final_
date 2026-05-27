@@ -3,7 +3,7 @@
     <AlumnosCreate 
       v-if="showCreate" 
       @close="showCreate = false" 
-      @created="handleCreated" 
+      @created="manejarCreado" 
     />
     <AlumnosShow 
       v-if="showView && selectedAlumnoId" 
@@ -19,7 +19,7 @@
       v-if="showEdit && selectedAlumnoId" 
       :alumno-id="selectedAlumnoId"
       @close="showEdit = false" 
-      @updated="handleUpdated" 
+      @updated="manejarActualizado" 
     />
   </div>
 </template>
@@ -36,7 +36,7 @@ const showEdit = ref(false)
 const showView = ref(false)
 const selectedAlumnoId = ref<number | null>(null)
 
-function handleCreated() {
+function manejarCreado() {
   showCreate.value = false
 }
 
@@ -50,7 +50,7 @@ function handleShow(id: number) {
   showView.value = true
 }
 
-function handleUpdated() {
+function manejarActualizado() {
   showEdit.value = false
   selectedAlumnoId.value = null
 }

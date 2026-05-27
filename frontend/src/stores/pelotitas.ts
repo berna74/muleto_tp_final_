@@ -14,92 +14,92 @@ export const usePelotitasStore = defineStore('pelotitas', () => {
   const totalCount = ref(0)
   const pageSize = ref(10)
 
-  const fetchPelotitas = async (page: number = 1) => {
+  const cargarPelotitas = async (page: number = 1) => {
     loading.value = true
     error.value = null
     try {
       currentPage.value = page
-      const response = await ApiService.get(`/pelotitas/?page=${page}`)
+      const response = await ApiService.obtener(`/pelotitas/?page=${page}`)
       pelotitas.value = response.data.items || []
       totalPages.value = response.data.total_pages || 1
       totalCount.value = response.data.total_count || 0
       pageSize.value = response.data.page_size || 10
     } catch (err: any) {
       error.value = err.message || 'Error al cargar pelotitas'
-      console.error('Error fetching pelotitas:', err)
+      console.error('Error al cargar pelotitas:', err)
     } finally {
       loading.value = false
     }
   }
 
-  const fetchPelotita = async (id: number) => {
+  const cargarPelotita = async (id: number) => {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get(`/pelotitas/${id}`)
+      const response = await ApiService.obtener(`/pelotitas/${id}`)
       pelotita.value = response.data
     } catch (err: any) {
       error.value = err.message || 'Error al cargar pelotita'
-      console.error('Error fetching pelotita:', err)
+      console.error('Error al cargar pelotita:', err)
     } finally {
       loading.value = false
     }
   }
 
-  const createPelotita = async (data: Pelotita) => {
+  const crearPelotita = async (data: Pelotita) => {
     loading.value = true
     error.value = null
     try {
-      await ApiService.post('/pelotitas/', data)
-      await fetchPelotitas(currentPage.value)
+      await ApiService.enviar('/pelotitas/', data)
+      await cargarPelotitas(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al crear pelotita'
-      console.error('Error creating pelotita:', err)
+      console.error('Error al crear pelotita:', err)
       throw err
     } finally {
       loading.value = false
     }
   }
 
-  const updatePelotita = async (id: number, data: Partial<Pelotita>) => {
+  const actualizarPelotita = async (id: number, data: Partial<Pelotita>) => {
     loading.value = true
     error.value = null
     try {
-      await ApiService.put(`/pelotitas/${id}`, data)
-      await fetchPelotitas(currentPage.value)
+      await ApiService.modificar(`/pelotitas/${id}`, data)
+      await cargarPelotitas(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al actualizar pelotita'
-      console.error('Error updating pelotita:', err)
+      console.error('Error al actualizar pelotita:', err)
       throw err
     } finally {
       loading.value = false
     }
   }
 
-  const deletePelotita = async (id: number) => {
+  const eliminarPelotita = async (id: number) => {
     loading.value = true
     error.value = null
     try {
-      await ApiService.delete(`/pelotitas/${id}`)
-      await fetchPelotitas(currentPage.value)
+      await ApiService.eliminar(`/pelotitas/${id}`)
+      await cargarPelotitas(currentPage.value)
     } catch (err: any) {
       error.value = err.message || 'Error al eliminar pelotita'
-      console.error('Error deleting pelotita:', err)
+      console.error('Error al eliminar pelotita:', err)
       throw err
     } finally {
       loading.value = false
     }
   }
 
-  const fetchResumen = async () => {
+  const cargarResumen = async () => {
     loading.value = true
     error.value = null
     try {
-      const response = await ApiService.get('/pelotitas/resumen')
+      const response = await ApiService.obtener('/pelotitas/resumen')
       resumen.value = response.data
     } catch (err: any) {
       error.value = err.message || 'Error al cargar resumen'
-      console.error('Error fetching resumen:', err)
+      console.error('Error al cargar resumen:', err)
     } finally {
       loading.value = false
     }
@@ -115,11 +115,11 @@ export const usePelotitasStore = defineStore('pelotitas', () => {
     totalPages,
     totalCount,
     pageSize,
-    fetchPelotitas,
-    fetchPelotita,
-    createPelotita,
-    updatePelotita,
-    deletePelotita,
-    fetchResumen
+    cargarPelotitas,
+    cargarPelotita,
+    crearPelotita,
+    actualizarPelotita,
+    eliminarPelotita,
+    cargarResumen
   }
 })

@@ -66,12 +66,12 @@ const categoriasStore = useCategoriasStore()
 const { categorias, loading, error, currentPage, totalPages } = storeToRefs(categoriasStore)
 
 onMounted(async () => {
-  await categoriasStore.fetchCategorias()
+  await categoriasStore.cargarCategorias()
 })
 
 async function goToPage(page: number) {
   if (page >= 1 && page <= totalPages.value) {
-    await categoriasStore.fetchCategorias(page)
+    await categoriasStore.cargarCategorias(page)
   }
 }
 
@@ -79,7 +79,7 @@ async function eliminar(id: number) {
   if (confirm('Estas seguro de eliminar la categoria ' + id + '?')) {
     if (confirm('Esta accion no se puede deshacer. Deseas continuar?')) {
       try {
-        await categoriasStore.deleteCategoria(id)
+        await categoriasStore.eliminarCategoria(id)
       } catch (error) {
         console.error('Error al eliminar categoria:', error)
         alert('Error al eliminar la categoria. Puede estar asociada a otros registros.')

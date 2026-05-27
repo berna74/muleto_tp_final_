@@ -40,7 +40,7 @@ const profesoresStore = useProfesoresStore()
 const { profesor, loading } = storeToRefs(profesoresStore)
 
 onMounted(() => {
-  profesoresStore.fetchProfesor(props.id)
+  profesoresStore.cargarProfesor(props.id)
 })
 </script>
 

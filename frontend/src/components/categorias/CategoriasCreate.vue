@@ -38,7 +38,7 @@
     }
   
     try {
-      await store.createCategoria(nuevaCategoria.value); 
+      await store.crearCategoria(nuevaCategoria.value); 
       router.push({ name: 'categorias_list' });
     } catch (error) {
       console.error('Error al crear la categoría:', error);

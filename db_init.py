@@ -29,6 +29,7 @@ TABLES = {
             nombre VARCHAR(50) NOT NULL,
             apellido VARCHAR(50) NOT NULL,
             dni VARCHAR(20) UNIQUE,
+            CONSTRAINT chk_profesores_dni_numerico CHECK (dni ~ '^[0-9]+$'),
             horarios_clases VARCHAR(100) NOT NULL,
             telefono VARCHAR(20) NOT NULL,
             email VARCHAR(100) NOT NULL
@@ -40,6 +41,7 @@ TABLES = {
             nombre VARCHAR(50) NOT NULL,
             apellido VARCHAR(50) NOT NULL,
             dni VARCHAR(20) NOT NULL UNIQUE,
+            CONSTRAINT chk_socios_dni_numerico CHECK (dni ~ '^[0-9]+$'),
             email VARCHAR(100) NOT NULL,
             telefono VARCHAR(20) NOT NULL,
             fecha_inscripcion DATE NOT NULL,
@@ -64,7 +66,7 @@ TABLES = {
                 FOREIGN KEY (categoria_id)
                 REFERENCES "CATEGORIAS" (id)
                 ON DELETE CASCADE,
-            PRIMARY KEY (socio_id, categoria_id)
+            CONSTRAINT uq_socio_categoria UNIQUE (socio_id, categoria_id)
         )
     """,
     "TURNOS": """
@@ -99,6 +101,7 @@ TABLES = {
             nombre VARCHAR(50) NOT NULL,
             apellido VARCHAR(50) NOT NULL,
             dni VARCHAR(20) NOT NULL UNIQUE,
+            CONSTRAINT chk_alumnos_dni_numerico CHECK (dni ~ '^[0-9]+$'),
             email VARCHAR(100) NOT NULL,
             telefono VARCHAR(20) NOT NULL,
             fecha_inscripcion DATE NOT NULL,
