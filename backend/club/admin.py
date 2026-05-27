@@ -1,0 +1,1 @@
+"""Compatibilidad temporal: el registro admin vive en apps de dominio."""

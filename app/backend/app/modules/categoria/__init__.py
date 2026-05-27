@@ -1,1 +1,0 @@
-from .categoria_routes import categoria_bp

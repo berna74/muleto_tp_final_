@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Backend: Django runserver",
+      "type": "shell",
+      "command": "source ../.venv/bin/activate && python manage.py runserver",
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: Vite dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Full Stack",
+      "dependsOn": [
+        "Backend: Django runserver",
+        "Frontend: Vite dev"
+      ],
+      "dependsOrder": "parallel"
+    }
+  ]
+}
