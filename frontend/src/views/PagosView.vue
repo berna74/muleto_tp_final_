@@ -5,11 +5,6 @@
       @close="showCreate = false" 
       @created="manejarCreado" 
     />
-    <PagosList 
-      @create="showCreate = true" 
-      @edit="handleEdit"
-      @show="handleShow"
-    />
     <PagosUpdate 
       v-if="showEdit && selectedPagoId" 
       :pago-id="selectedPagoId"
@@ -20,6 +15,11 @@
       v-if="showView && selectedPagoId" 
       :pago-id="selectedPagoId"
       @close="showView = false" 
+    />
+    <PagosList 
+      @create="showCreate = true" 
+      @edit="handleEdit"
+      @show="handleShow"
     />
   </div>
 </template>
