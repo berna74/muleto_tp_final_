@@ -20,6 +20,12 @@ class SocioSerializer(serializers.ModelSerializer):
         required=False,
         write_only=True,
     )
+    categorias_ids = serializers.ListField(
+        child=serializers.IntegerField(min_value=1),
+        required=False,
+        write_only=True,
+        source="categorias",
+    )
     profesor_nombre = serializers.SerializerMethodField()
 
     def validate_dni(self, value):
@@ -41,6 +47,7 @@ class SocioSerializer(serializers.ModelSerializer):
             "profesor_nombre",
             "profesor",
             "categorias",
+            "categorias_ids",
             "registra_deuda",
         )
 

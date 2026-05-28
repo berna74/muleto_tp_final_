@@ -140,6 +140,7 @@ async function handleSubmit() {
   try {
     const socioData = {
       ...formData.value,
+      categorias: selectedCategorias.value,
       categorias_ids: selectedCategorias.value
     }
     
